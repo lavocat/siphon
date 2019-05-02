@@ -1,0 +1,12 @@
+---
+- hosts: all
+  serial: 10
+  gather_facts: no
+  tasks:
+    - name: get hostname
+      shell: hostname -s
+      register: node_hostname
+    - name: get package facts
+      package_facts:
+        manager: "auto"
+    - local_action: copy content={{ ansible_facts.packages | to_nice_json }} dest=~/git/ansible/package-inventory/labs/{{ inventory_hostname }}
